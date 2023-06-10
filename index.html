@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Metode Iterasi Titik Tetap</title>
+</head>
+<body>
+    <!-- Judul halaman -->
+    <h1>Metode Iterasi Titik Tetap</h1>
+    
+    <!-- Form input -->
+    <form id="inputForm">
+        <!-- Input untuk tebakan awal x0 -->
+        <label for="x0">Tebakan awal x0:</label>
+        <input type="number" step="any" id="x0" required><br><br>
+
+        <!-- Input untuk toleransi epsilon -->
+        <label for="epsilon">Toleransi epsilon:</label>
+        <input type="number" step="any" id="epsilon" required><br><br>
+
+        <!-- Input untuk maksimum iterasi -->
+        <label for="maxIterasi">Maksimum iterasi:</label>
+        <input type="number" id="maxIterasi" required><br><br>
+
+        <!-- Tombol untuk menghitung -->
+        <button type="submit">Hitung</button>
+    </form>
+
+    <!-- Tabel output -->
+    <table id="outputTable">
+        <tr>
+            <!-- Kolom header tabel -->
+            <th>Iterasi</th>
+            <th>x</th>
+            <th>Galat</th>
+        </tr>
+    </table>
+
+    <!-- Output akar persamaan -->
+    <h2>Akar persamaan: <span id="akar"></span></h2>
+
+    <!-- Script JavaScript -->
+    <script>
+        // Menggunakan event listener untuk menangani submit form
+        document.getElementById("inputForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Mendapatkan nilai dari input
+            var x0 = parseFloat(document.getElementById("x0").value);
+            var epsilon = parseFloat(document.getElementById("epsilon").value);
+            var maxIterasi = parseInt(document.getElementById("maxIterasi").value);
+
+            // Menginisialisasi tabel output
+            var table = document.getElementById("outputTable");
+            table.innerHTML = "<tr><th>Iterasi</th><th>x</th><th>Galat</th></tr>";
+
+            // Inisialisasi variabel iterasi, x, dan galat
+            var iterasi = 0;
+            var x = x0;
+            var galat = epsilon + 1;
+
+            // Menambahkan baris pertama pada tabel output
+            var row = table.insertRow(-1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+
+            cell1.innerHTML = iterasi;
+            cell2.innerHTML = x.toFixed(6);
+            cell3.innerHTML = galat.toFixed(6);
+
+            iterasi++;
+
+            // Melakukan iterasi hingga memenuhi kondisi berhenti
+            while (galat > epsilon && iterasi < maxIterasi) {
+                // Menghitung xBaru menggunakan fungsi
+                var xBaru = fungsi(x);
+
+                // Menghitung galat
+                galat = Math.abs(xBaru - x);
+                x = xBaru;
+
+                // Menambahkan baris pada tabel output
+                var row = table.insertRow(-1);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+
+                cell1.innerHTML = iterasi;
+                cell2.innerHTML = x.toFixed(6);
+                cell3.innerHTML = galat.toFixed(6);
+
+                iterasi++;
+            }
+
+            // Menampilkan akar persamaan pada elemen dengan id "akar"
+            document.getElementById("akar").innerHTML = x.toFixed(6);
+        });
+
+        // Fungsi yang ingin dicari akarnya
+        function fungsi(x) {
+            return Math.sqrt(Math.exp(-x));
+        }
+    </script>
+</body>
+</html>
